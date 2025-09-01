@@ -6,7 +6,7 @@ const selectedId = Number(localStorage.getItem("selectedProductId"));
 async function fetchProductById(id) {
   try {
     //  ----------- TRAEMOS TODOS LOS PRODUCTOS CON POPULATE PARA INCLUIR LOS MEDIOS -----------
-    const res = await fetch(`https://playful-friendship-cd80f76481.strapiapp.com/api/products?populate=*`);
+    const res = await fetch(`https://playful-friendship-cd80f76481.strapiapp.com/api/product?populate=*`);
     if (!res.ok) throw new Error("No se pudieron cargar los productos");
 
     const { data } = await res.json();
