@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pony Club</title>
+    <link rel="shortcut icon" href="../assets/logo/logo.jpg" type="image/x-icon">
+    <link rel="stylesheet" href="../styles/shop-now.css">
+    <link rel="stylesheet" href="../styles/aux-mediaqueris.css">
+    <link rel="stylesheet" href="../styles/complete-buy.css">
+</head>
+
+<body>
+    <main id="main">
+        <!-- top banner -->
+        <div class="top-banner">
+            <div class="scrolling-text">
+                <span>Welcome to Pony Club Oficcial</span>
+            </div>
+        </div>
+
+        <!-- header/nav -->
+        <header class="header" id="Inicio">
+
+            <!-- Logo centrado -->
+            <div class="logo-container-complete-buy">
+                <a href="../pages/shop-now.html">
+                    <img src="../assets/logo/logo-removebg-preview.png" alt="logo" class="nav-logo">
+                </a>
+            </div>
+
+        </header>
+
+        <section class="complete-buy-section">
+
+            <form id="orderForm" autocomplete="on">
+                <label for="firstName">First Name</label>
+                <input type="text" id="firstName" name="firstName" required />
+
+                <label for="lastName">Last Name</label>
+                <input type="text" id="lastName" name="lastName" required />
+
+                <label for="email">Email Address</label>
+                <input type="email" id="email" name="email" required />
+
+                <label for="phone">Phone Number</label>
+                <input type="tel" id="phone" name="phone" required />
+
+                <label for="country">Country</label>
+                <input type="text" id="country" name="country" required />
+
+                <label for="state">State / Province</label>
+                <input type="text" id="state" name="state" required />
+
+                <label for="city">City</label>
+                <input type="text" id="city" name="city" required />
+
+                <label for="zip">Zip Code</label>
+                <input type="text" id="zip" name="zip" required />
+
+                <input type="hidden" id="orderSummary" name="orderSummary">
+
+                <button type="submit" id="submitBtn">Continue to Payment</button>
+            </form>
+
+            <!-- Contenedor PayPal (inicialmente oculto) -->
+            <div id="paypal-button-container" style="display:none;"></div>
+
+        </section>
+
+
+        <!-- footer / contact -->
+
+        <footer class="footer" id="Contacto">
+
+            <div class="top-line"></div>
+            <div class="footer-top-container">
+                <div class="footer-logo">
+                    <img src="../assets/logo/logo-removebg-preview.png" alt="logo">
+                </div>
+                <div class="social-links">
+                    <ul class="social-links-container">
+                        <li class="social-link">
+                            <a href="https://www.instagram.com" target="_blank" aria-label="Instagram">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor"
+                                    viewBox="0 0 24 24">
+                                    <path
+                                        d="M12 2.2c3.2 0 3.6 0 4.8.1 1.1.1 1.7.2 2.1.4.5.2.9.5 1.3.9.4.4.7.8.9 1.3.2.4.4 1 .4 2.1.1 1.2.1 1.6.1 4.8s0 3.6-.1 4.8c-.1 1.1-.2 1.7-.4 2.1-.2.5-.5.9-.9 1.3-.4.4-.8.7-1.3.9-.4.2-1 .4-2.1.4-1.2.1-1.6.1-4.8.1s-3.6 0-4.8-.1c-1.1-.1-1.7-.2-2.1-.4-.5-.2-.9-.5-1.3-.9-.4-.4-.7-.8-.9-1.3-.2-.4-.4-1-.4-2.1-.1-1.2-.1-1.6-.1-4.8s0-3.6.1-4.8c.1-1.1.2-1.7.4-2.1.2-.5.5-.9.9-1.3.4-.4.8-.7 1.3-.9.4-.2 1-.4 2.1-.4C8.4 2.2 8.8 2.2 12 2.2m0-2.2C8.7 0 8.3 0 7.1.1c-1.3.1-2.2.3-3 .7-.8.3-1.6.9-2.3 1.6S.8 4 .5 4.8c-.3.8-.5 1.7-.6 3C0 8.3 0 8.7 0 12s0 3.7.1 4.9c.1 1.3.3 2.2.6 3 .3.8.9 1.6 1.6 2.3s1.5 1.3 2.3 1.6c.8.3 1.7.5 3 .6 1.2.1 1.6.1 4.9.1s3.7 0 4.9-.1c1.3-.1 2.2-.3 3-.6.8-.3 1.6-.9 2.3-1.6s1.3-1.5 1.6-2.3c.3-.8.5-1.7.6-3 .1-1.2.1-1.6.1-4.9s0-3.7-.1-4.9c-.1-1.3-.3-2.2-.6-3-.3-.8-.9-1.6-1.6-2.3S20.8.8 20 .5c-.8-.3-1.7-.5-3-.6C15.7 0 15.3 0 12 0zM12 5.8A6.2 6.2 0 1 0 12 18.2 6.2 6.2 0 0 0 12 5.8zm0 10.2a4 4 0 1 1 0-8 4 4 0 0 1 0 8zm6.4-11.8a1.4 1.4 0 1 0 0 2.8 1.4 1.4 0 0 0 0-2.8z" />
+                                </svg>
+                            </a>
+                        </li>
+                        <li class="social-link">
+                            <a href="https://www.facebook.com" target="_blank" aria-label="Facebook">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor"
+                                    viewBox="0 0 24 24">
+                                    <path
+                                        d="M22.675 0H1.325C.593 0 0 .593 0 1.326v21.348C0 23.407.593 24 1.325 24h11.483v-9.294H9.692V11.01h3.116V8.413c0-3.1 1.894-4.788 4.66-4.788 1.325 0 2.464.099 2.797.143v3.24l-1.918.001c-1.504 0-1.796.715-1.796 1.763v2.313h3.587l-.467 3.696h-3.12V24h6.116c.73 0 1.324-.593 1.324-1.326V1.326C24 .593 23.407 0 22.675 0z" />
+                                </svg>
+                            </a>
+                        </li>
+                        <li class="social-link">
+                            <a href="https://wa.me/11111111" target="_blank" aria-label="WhatsApp">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor"
+                                    viewBox="0 0 24 24">
+                                    <path
+                                        d="M20.52 3.48A11.8 11.8 0 0 0 12.06 0C5.56 0 .24 5.31.24 11.82c0 2.08.55 4.12 1.59 5.92L0 24l6.39-1.68a11.77 11.77 0 0 0 5.67 1.44h.01c6.5 0 11.81-5.31 11.81-11.81 0-3.15-1.23-6.11-3.36-8.17zM12.07 21.55c-1.74 0-3.45-.46-4.94-1.32l-.35-.21-3.79 1 .99-3.68-.24-.38a9.8 9.8 0 0 1-1.5-5.2c0-5.43 4.42-9.85 9.85-9.85a9.8 9.8 0 0 1 9.85 9.85c0 5.43-4.42 9.84-9.84 9.84zm5.45-7.39c-.3-.15-1.75-.86-2.02-.95-.27-.1-.46-.15-.65.15s-.75.95-.93 1.15-.34.23-.63.08a8.03 8.03 0 0 1-2.37-1.46 8.83 8.83 0 0 1-1.63-2.03c-.17-.3-.02-.46.13-.6.14-.14.3-.34.46-.51.15-.17.2-.3.3-.5.1-.2.05-.38-.03-.53-.08-.15-.65-1.55-.89-2.12-.24-.58-.48-.5-.65-.5h-.56c-.2 0-.52.07-.79.38s-1.04 1.02-1.04 2.5 1.07 2.9 1.22 3.1c.15.2 2.1 3.2 5.08 4.5.71.3 1.26.48 1.7.61.71.22 1.36.19 1.87.11.57-.09 1.75-.72 2-1.42.25-.7.25-1.3.17-1.42-.07-.11-.26-.17-.55-.3z" />
+                                </svg>
+                            </a>
+                        </li>
+                    </ul>
+
+                </div>
+            </div>
+
+            <div class="footer-mid-container">
+                <div class="footer-mid-title">
+                    <h3>Payment Methods</h3>
+                </div>
+                <ul class="payment-container">
+                    <li><img src="../assets/payment/amex-3-svgrepo-com.svg" alt="payment"></li>
+                    <li><img src="../assets/payment/mastercard-old-3-svgrepo-com.svg" alt="payment"></li>
+                    <li><img src="../assets/payment/paypal-svgrepo-com.svg" alt="payment"></li>
+                    <li><img src="../assets/payment/visa-3-svgrepo-com.svg" alt="payment"></li>
+                </ul>
+            </div>
+        </footer>
+
+        <div class="bottom-rights">
+            <p> © All rights reserved to Focus Vision Web Service.</p>
+        </div>
+
+    </main>
+
+    <div class="add-modal">
+        <p>Añadiste un producto</p>
+    </div>
+    <!-- Overlay -->
+    <div id="overlay" class="overlay"></div>
+
+    <!-- scripts -->
+    <!-- EmailJS SDK -->
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+
+    <script type="text/javascript">
+        emailjs.init('xAnEuaanINhhoTbn0')
+    </script>
+    <script
+        src="https://www.paypal.com/sdk/js?client-id=AVSHZjKS0tS9LhJmjIiF1QpybFPo37u-SfBNdui5szp_HyJtqUwSIZ0gxwU0_q2vzm7n9hbkXT2KEg3T&currency=USD"></script>
+    <script src="https://kit.fontawesome.com/a0c4fed9cc.js" crossorigin="anonymous"></script>
+
+    <script src="../javascript/data.js" defer></script>
+    <script src="../javascript/main.js" defer></script>
+</body>
+
+</html>
