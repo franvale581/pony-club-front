@@ -101,7 +101,7 @@ function iniciarApp() {
   // ----------- FETCH PRODUCTOS DESDE STRAPI -----------
   const fetchProducts = async () => {
     try {
-      const res = await fetch("https://playful-friendship-cd80f76481.strapiapp.com/api/product?populate=*");
+      const res = await fetch("https://playful-friendship-cd80f76481.strapiapp.com/api/products?populate=*");
       const { data } = await res.json();
 
       gorras = data.map(item => ({
