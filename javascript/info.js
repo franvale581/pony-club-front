@@ -6,7 +6,7 @@ const selectedId = Number(localStorage.getItem("selectedProductId"));
 async function fetchProductById(id) {
   try {
     //  ----------- TRAEMOS TODOS LOS PRODUCTOS CON POPULATE PARA INCLUIR LOS MEDIOS -----------
-    const res = await fetch(`http://localhost:1337/api/products?populate=*`);
+    const res = await fetch(`https://playful-friendship-cd80f76481.strapiapp.com/api/products?populate=*`);
     if (!res.ok) throw new Error("No se pudieron cargar los productos");
 
     const { data } = await res.json();
@@ -16,8 +16,8 @@ async function fetchProductById(id) {
 
     // ----------- MAPEAR infoImege DESDE STRAPI -----------
     const imageInfo = Array.isArray(item.imageInfo) && item.imageInfo.length
-      ? item.imageInfo.map(img => img?.url ? `http://localhost:1337${img.url}` : "https://via.placeholder.com/300x300?text=No+Image")
-      : [item.image?.url ? `http://localhost:1337${item.image.url}` : "https://via.placeholder.com/300x300?text=No+Image"];
+      ? item.imageInfo.map(img => img?.url ? `https://playful-friendship-cd80f76481.strapiapp.com/${img.url}` : "https://via.placeholder.com/300x300?text=No+Image")
+      : [item.image?.url ? `https://playful-friendship-cd80f76481.strapiapp.com/${item.image.url}` : "https://via.placeholder.com/300x300?text=No+Image"];
 
     const product = {
       id: item.id,

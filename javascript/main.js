@@ -101,7 +101,7 @@ function iniciarApp() {
   // ----------- FETCH PRODUCTOS DESDE STRAPI -----------
   const fetchProducts = async () => {
     try {
-      const res = await fetch("http://localhost:1337/api/products?populate=*");
+      const res = await fetch("https://playful-friendship-cd80f76481.strapiapp.com/api/products?populate=*");
       const { data } = await res.json();
 
       gorras = data.map(item => ({
@@ -110,7 +110,7 @@ function iniciarApp() {
         brand: item.brand,
         price: item.price,
         image: item.image?.url
-          ? `http://localhost:1337${item.image.url}`
+          ? `https://playful-friendship-cd80f76481.strapiapp.com/${item.image.url}`
           : "https://via.placeholder.com/150",
         inStock: item.inStock,
         availableQuantity: item.availableQuantity,
