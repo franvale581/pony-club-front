@@ -1,4 +1,3 @@
-// andres-web\frontend\javascript\main.js
 console.log("main.js cargado correctamente");
 
 function iniciarApp() {
@@ -55,6 +54,16 @@ function iniciarApp() {
   const closeOnOverlayClick = () => {
     if (barsMenu) barsMenu.classList.remove("open");
     if (cartMenu) cartMenu.classList.remove("open-cart");
+    if (overlay) overlay.classList.remove("show-overlay");
+  };
+
+  const closeCart = () => {
+    if (cartMenu) cartMenu.classList.remove("open-cart");
+    if (overlay) overlay.classList.remove("show-overlay");
+  };
+
+  const closeMenu = () => {
+    if (barsMenu) barsMenu.classList.remove("open");
     if (overlay) overlay.classList.remove("show-overlay");
   };
 
@@ -228,27 +237,7 @@ function iniciarApp() {
         return actions.order.capture().then(() => {
           emailjs.sendForm('service_4hsq0la', 'template_1sgzyxq', clientForm)
             .then(async () => {
-              // ---------------------------------------------------
-              // 🔽 Aquí iría la actualización del stock en Strapi 🔽
-              // for (const item of cart) {
-              //   const product = gorras.find(p => p.id === item.id);
-              //   if (product) {
-              //     await fetch(`http://localhost:1337/api/products/${item.id}`, {
-              //       method: "PUT",
-              //       headers: {
-              //         "Content-Type": "application/json",
-              //         "Authorization": "Bearer TU_API_TOKEN" // ⚠️ Reemplaza con tu token
-              //       },
-              //       body: JSON.stringify({
-              //         data: {
-              //           availableQuantity: product.availableQuantity - item.quantity
-              //         }
-              //       })
-              //     });
-              //   }
-              // }
-              // ---------------------------------------------------
-
+              // Actualización de stock comentada
               localStorage.removeItem("cart");
               cart = [];
               updateCartState();
@@ -257,15 +246,15 @@ function iniciarApp() {
               if (completeSection) {
                 const resumen = cart.map(p => `${p.quantity}x ${p.name} - $${(p.quantity * p.price).toFixed(2)}`).join('<br>');
                 completeSection.innerHTML = `
-          <div class="complete-buy-message">
-            <h2>Thank you for your purchase!</h2>
-            <p>You are now part of the Pony Club family. You will receive an email shortly with your order confirmation and tracking number.</p>
-            <div class="order-summary">
-              ${resumen}
-            </div>
-            <button id="backToShop">Back to Shop</button>
-          </div>
-          `;
+                  <div class="complete-buy-message">
+                    <h2>Thank you for your purchase!</h2>
+                    <p>You are now part of the Pony Club family. You will receive an email shortly with your order confirmation and tracking number.</p>
+                    <div class="order-summary">
+                      ${resumen}
+                    </div>
+                    <button id="backToShop">Back to Shop</button>
+                  </div>
+                `;
                 const backBtn = document.getElementById('backToShop');
                 if (backBtn) backBtn.addEventListener('click', () => {
                   window.location.href = "shop-now.html";
@@ -274,8 +263,7 @@ function iniciarApp() {
             })
             .catch(err => console.error("Error al enviar email:", err));
         });
-      }
-      ,
+      },
       onError: (err) => console.error("Error PayPal:", err)
     }).render("#paypal-button-container");
   };
@@ -312,8 +300,8 @@ function iniciarApp() {
     window.location.href = "complete-buy.html";
   });
   if (deleteBtn) deleteBtn.addEventListener("click", () => { cart = []; updateCartState(); });
-  if (closeCartBtn) closeCartBtn.addEventListener("click", closeOnOverlayClick);
-  if (closeMenuBtn) closeMenuBtn.addEventListener("click", closeOnOverlayClick);
+  if (closeCartBtn) closeCartBtn.addEventListener("click", closeCart);
+  if (closeMenuBtn) closeMenuBtn.addEventListener("click", closeMenu);
   if (menuToggle) menuToggle.addEventListener("click", toggleMenu);
   if (cartIcon) cartIcon.addEventListener("click", toggleCart);
   if (navbarLinks) navbarLinks.forEach(link => link.addEventListener("click", closeOnClick));
