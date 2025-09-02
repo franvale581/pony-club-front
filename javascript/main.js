@@ -25,32 +25,31 @@ function iniciarApp() {
   let gorras = []; // productos desde Strapi
 
   // ----------- FUNCIÓN PARA ACTUALIZAR STOCK EN STRAPI -----------
-  async function sendStockUpdates(cartItems) {
-    const STRAPI_BASE = 'https://playful-friendship-cd80f76481.strapiapp.com'; // tu backend
+async function sendStockUpdates(cart) {
+  const STRAPI_BASE = 'https://playful-friendship-cd80f76481.strapiapp.com';
 
-    for (const item of cartItems) {
-      try {
-        const res = await fetch(`${STRAPI_BASE}/api/products/update-stock`, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify({
-            productId: item.id,
-            quantitySold: item.quantity
-          })
-        });
+  for (const item of cart) {
+    try {
+      const res = await fetch(`${STRAPI_BASE}/api/products/update-stock`, { // <-- coincide con la ruta
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          productId: item.id,
+          quantitySold: item.quantity
+        })
+      });
 
-        if (!res.ok) {
-          console.error('Error actualizando stock de', item.id, await res.text());
-        } else {
-          console.log('Stock actualizado de', item.id);
-        }
-      } catch (err) {
-        console.error('Fetch error al actualizar stock:', err);
+      if (!res.ok) {
+        console.error('Error actualizando stock de', item.id, await res.text());
+      } else {
+        console.log('Stock actualizado de', item.id);
       }
+    } catch (err) {
+      console.error('Fetch error al actualizar stock:', err);
     }
   }
+}
+
 
   // ----------- MENÚ Y CARRITO -----------
   const toggleMenu = () => {
