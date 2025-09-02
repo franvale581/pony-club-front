@@ -22,19 +22,18 @@ function iniciarApp() {
   const addModal = document.querySelector('.add-modal'); // modal de producto añadido
 
   let cart = JSON.parse(localStorage.getItem("cart")) || [];
-  let gorras = []; // GUARDAMOS LOS PRODUCTOS AQUÍ DESDE STRAPI
+  let gorras = []; // productos desde Strapi
 
   // ----------- FUNCIÓN PARA ACTUALIZAR STOCK EN STRAPI -----------
-  async function sendStockUpdates(cart) {
-    const STRAPI_BASE = 'https://playful-friendship-cd80f76481.strapiapp.com'; // tu backend hosteado
+  async function sendStockUpdates(cartItems) {
+    const STRAPI_BASE = 'https://playful-friendship-cd80f76481.strapiapp.com'; // tu backend
 
-    for (const item of cart) {
+    for (const item of cartItems) {
       try {
-        const res = await fetch(`${STRAPI_BASE}/api/update-stock`, {
+        const res = await fetch(`${STRAPI_BASE}/api/products/update-stock`, {
           method: 'POST',
           headers: {
-            'Content-Type': 'application/json',
-            // 'x-update-stock-secret': 'mi-secreto' // lo activamos luego si pones seguridad
+            'Content-Type': 'application/json'
           },
           body: JSON.stringify({
             productId: item.id,
@@ -250,10 +249,10 @@ function iniciarApp() {
   };
 
   // ----------- PAYPAL -----------
-  const renderPayPalButton = (cart) => {
+  const renderPayPalButton = (cartItems) => {
     if (!window.paypal || !paypalContainer) return;
     paypalContainer.innerHTML = "";
-    if (!cart.length) return;
+    if (!cartItems.length) return;
 
     const total = getCartTotal();
     const totalValue = total > 0 ? total.toFixed(2) : "0.01";
@@ -263,20 +262,22 @@ function iniciarApp() {
         purchase_units: [{ amount: { value: totalValue } }]
       }),
       onApprove: (data, actions) => {
-        return actions.order.capture().then(() => {
+        return actions.order.capture().then(async () => {
           emailjs.sendForm('service_4hsq0la', 'template_1sgzyxq', clientForm)
             .then(async () => {
+
               // ✅ ACTUALIZAR STOCK ANTES DE LIMPIAR EL CARRITO
-              await sendStockUpdates(cart);
+              await sendStockUpdates(cartItems);
 
               // Limpiar carrito
+              const cartCopy = [...cartItems]; // para usar en resumen
               localStorage.removeItem("cart");
               cart = [];
               updateCartState();
               paypalContainer.innerHTML = "";
 
               if (completeSection) {
-                const resumen = cart.map(p => `${p.quantity}x ${p.name} - $${(p.quantity * p.price).toFixed(2)}`).join('<br>');
+                const resumen = cartCopy.map(p => `${p.quantity}x ${p.name} - $${(p.quantity * p.price).toFixed(2)}`).join('<br>');
                 completeSection.innerHTML = `
                   <div class="complete-buy-message">
                     <h2>Thank you for your purchase!</h2>
@@ -337,12 +338,11 @@ function iniciarApp() {
   if (menuToggle) menuToggle.addEventListener("click", toggleMenu);
   if (cartIcon) cartIcon.addEventListener("click", toggleCart);
   if (navbarLinks) navbarLinks.forEach(link => link.addEventListener("click", closeOnClick));
-  if (overlay) overlay.addEventListener("click", closeOnOverlayClick);
   if (productsContainer) productsContainer.addEventListener("click", handleProductClick);
   if (productsCart) productsCart.addEventListener("click", handleQuantity);
 
   // ----------- RENDER INICIAL -----------
-  fetchProducts(); // CARGAMOS PRODUCTOS DESDE STRAPI
+  fetchProducts();
   updateCartState();
 }
 
