@@ -24,6 +24,35 @@ function iniciarApp() {
   let cart = JSON.parse(localStorage.getItem("cart")) || [];
   let gorras = []; // GUARDAMOS LOS PRODUCTOS AQUÍ DESDE STRAPI
 
+  // ----------- FUNCIÓN PARA ACTUALIZAR STOCK EN STRAPI -----------
+  async function sendStockUpdates(cart) {
+    const STRAPI_BASE = 'https://playful-friendship-cd80f76481.strapiapp.com'; // tu backend hosteado
+
+    for (const item of cart) {
+      try {
+        const res = await fetch(`${STRAPI_BASE}/api/update-stock`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            // 'x-update-stock-secret': 'mi-secreto' // lo activamos luego si pones seguridad
+          },
+          body: JSON.stringify({
+            productId: item.id,
+            quantitySold: item.quantity
+          })
+        });
+
+        if (!res.ok) {
+          console.error('Error actualizando stock de', item.id, await res.text());
+        } else {
+          console.log('Stock actualizado de', item.id);
+        }
+      } catch (err) {
+        console.error('Fetch error al actualizar stock:', err);
+      }
+    }
+  }
+
   // ----------- MENÚ Y CARRITO -----------
   const toggleMenu = () => {
     if (barsMenu) barsMenu.classList.toggle("open");
@@ -237,7 +266,10 @@ function iniciarApp() {
         return actions.order.capture().then(() => {
           emailjs.sendForm('service_4hsq0la', 'template_1sgzyxq', clientForm)
             .then(async () => {
-              // Actualización de stock comentada
+              // ✅ ACTUALIZAR STOCK ANTES DE LIMPIAR EL CARRITO
+              await sendStockUpdates(cart);
+
+              // Limpiar carrito
               localStorage.removeItem("cart");
               cart = [];
               updateCartState();
