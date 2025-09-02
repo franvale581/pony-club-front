@@ -129,6 +129,7 @@ const fetchProducts = async () => {
   }
 };
 
+
   // ----------- CARRITO -----------
   const saveCart = () => localStorage.setItem("cart", JSON.stringify(cart));
 
