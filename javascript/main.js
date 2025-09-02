@@ -77,7 +77,7 @@ function iniciarApp() {
           <div class="product-stock ${inStock ? 'in-stock' : 'out-of-stock'}">
             ${inStock ? 'In Stock' : 'Out of Stock'}
           </div>
-          <image src="${image}" alt="product" class="product-img">
+          <img src="${image}" alt="product" class="product-img" />
         </div>
         <div class="product-text-container">
           <h3 class="product-name">${name}</h3>
@@ -139,7 +139,7 @@ function iniciarApp() {
 
       return `
         <div class="cart-item">
-          <image src="${image}" alt="producto" />
+          <img src="${image}" alt="producto" />
           <div class="item-info">
             <h3 class="item-title">${name}</h3>
             <p class="item-bid">Price</p>
