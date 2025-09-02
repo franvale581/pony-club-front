@@ -30,7 +30,7 @@ async function sendStockUpdates(cart) {
 
   for (const item of cart) {
     try {
-      const res = await fetch(`${STRAPI_BASE}/api/products/update-stock`, { // <-- coincide con la ruta
+      const res = await fetch(`${STRAPI_BASE}/api/update-stock`, { // <-- coincide con la ruta
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
