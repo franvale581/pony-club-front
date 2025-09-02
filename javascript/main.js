@@ -98,37 +98,29 @@ function iniciarApp() {
     `).join("");
   };
 
-// ----------- FETCH PRODUCTOS DESDE STRAPI -----------
-const fetchProducts = async () => {
-  try {
-    const res = await fetch("https://playful-friendship-cd80f76481.strapiapp.com/api/products?populate=*");
-    const { data } = await res.json();
+  // ----------- FETCH PRODUCTOS DESDE STRAPI -----------
+  const fetchProducts = async () => {
+    try {
+      const res = await fetch("https://playful-friendship-cd80f76481.strapiapp.com/api/products?populate=*");
+      const { data } = await res.json();
 
-    gorras = data.map(item => {
-      const attrs = item.attributes ?? {}; // 👈 siempre trabajar desde attributes
-
-      // Imagen (media single)
-      const imageUrl = attrs.image?.data?.attributes?.url
-        ? `https://playful-friendship-cd80f76481.strapiapp.com${attrs.image.data.attributes.url}`
-        : "https://placehold.co/150x150";
-
-      return {
+      gorras = data.map(item => ({
         id: item.id,
-        name: attrs.name,
-        brand: attrs.brand,
-        price: attrs.price,
-        image: imageUrl,
-        inStock: attrs.inStock,
-        availableQuantity: attrs.availableQuantity,
-      };
-    });
+        name: item.name,
+        brand: item.brand,
+        price: item.price,
+        image: item.image?.url
+          ? `https://playful-friendship-cd80f76481.strapiapp.com/api/products?populate=*${item.image.url}`
+          : "https://via.placeholder.com/150",
+        inStock: item.inStock,
+        availableQuantity: item.availableQuantity,
+      }));
 
-    renderProducts();
-  } catch (err) {
-    console.error("Error cargando productos:", err);
-  }
-};
-
+      renderProducts();
+    } catch (err) {
+      console.error("Error cargando productos:", err);
+    }
+  };
 
   // ----------- CARRITO -----------
   const saveCart = () => localStorage.setItem("cart", JSON.stringify(cart));
