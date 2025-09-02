@@ -105,10 +105,10 @@ const fetchProducts = async () => {
     const { data } = await res.json();
 
     gorras = data.map(item => {
-      const attrs = item.attributes; // 👈 todos los datos vienen acá
+      const attrs = item.attributes ?? {}; // 👈 siempre trabajar desde attributes
 
-      // Si es media single
-      let imageUrl = attrs.image?.data?.attributes?.url
+      // Imagen (media single)
+      const imageUrl = attrs.image?.data?.attributes?.url
         ? `https://playful-friendship-cd80f76481.strapiapp.com${attrs.image.data.attributes.url}`
         : "https://placehold.co/150x150";
 
