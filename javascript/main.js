@@ -67,23 +67,39 @@ function iniciarApp() {
     if (overlay) overlay.classList.remove("show-overlay");
   };
 
-  // ----------- RENDERIZADO DE PRODUCTOS -----------
-  const renderProducts = () => {
-    if (!productsContainer || !gorras.length) return;
+// ----------- CONFIG -----------
+const STRAPI_BASE =
+  window.location.hostname === "localhost"
+    ? "http://localhost:1337"
+    : "https://playful-friendship-cd80f76481.strapiapp.com";
 
-    productsContainer.innerHTML = gorras.map(({ id, name, brand, price, image, inStock, availableQuantity }) => `
+const toAbs = (u) => (u?.startsWith("http") ? u : `${STRAPI_BASE}${u}`);
+
+const PLACEHOLDER_IMG = "https://via.placeholder.com/150";
+
+// ----------- RENDERIZADO DE PRODUCTOS -----------
+const renderProducts = () => {
+  if (!productsContainer || !gorras?.length) return;
+
+  productsContainer.innerHTML = gorras
+    .map(({ id, name, brand, price, image, inStock, availableQuantity }) => `
       <div class="product">
         <div class="product-image-wrapper">
           <div class="product-stock ${inStock ? 'in-stock' : 'out-of-stock'}">
             ${inStock ? 'In Stock' : 'Out of Stock'}
           </div>
-          <img src="${image}" alt="product" class="product-img" />
+          <img
+            src="${image}"
+            alt="${name || 'product'}"
+            class="product-img"
+            onerror="this.onerror=null;this.src='${PLACEHOLDER_IMG}';"
+          />
         </div>
         <div class="product-text-container">
-          <h3 class="product-name">${name}</h3>
-          <h2 class="created-by-product">${brand}</h2>
-          <p class="product-price">$${price.toFixed(2)}</p>
-          <p class="available-quantity">Available: ${availableQuantity}</p>
+          <h3 class="product-name">${name ?? ''}</h3>
+          <h2 class="created-by-product">${brand ?? ''}</h2>
+          <p class="product-price">$${(Number(price) || 0).toFixed(2)}</p>
+          <p class="available-quantity">Available: ${availableQuantity ?? 0}</p>
         </div>
         <div class="btn-product-container">
           <button 
@@ -95,32 +111,54 @@ function iniciarApp() {
           <button class="btn-info" data-id="${id}">INFO</button>
         </div>
       </div>
-    `).join("");
-  };
+    `)
+    .join("");
+};
 
-  // ----------- FETCH PRODUCTOS DESDE STRAPI -----------
-  const fetchProducts = async () => {
-    try {
-      const res = await fetch("https://playful-friendship-cd80f76481.strapiapp.com/api/products?populate=*");
-      const { data } = await res.json();
+// ----------- FETCH PRODUCTOS DESDE STRAPI -----------
+const fetchProducts = async () => {
+  try {
+    const res = await fetch(`${STRAPI_BASE}/api/products?populate=*`);
+    const { data } = await res.json();
 
-      gorras = data.map(item => ({
+    gorras = (data || []).map((item) => {
+      const attrs = item?.attributes ?? {};
+
+      // Resolver imagen (single o multiple)
+      let imageUrl = PLACEHOLDER_IMG;
+
+      // Campo "image" (media single o multiple)
+      const img = attrs.image?.data;
+      if (Array.isArray(img) && img[0]?.attributes?.url) {
+        imageUrl = toAbs(img[0].attributes.url);
+      } else if (img?.attributes?.url) {
+        imageUrl = toAbs(img.attributes.url);
+      }
+
+      // (Opcional) Si tu modelo usa "images" como múltiple:
+      if (imageUrl === PLACEHOLDER_IMG) {
+        const imgs = attrs.images?.data;
+        if (Array.isArray(imgs) && imgs[0]?.attributes?.url) {
+          imageUrl = toAbs(imgs[0].attributes.url);
+        }
+      }
+
+      return {
         id: item.id,
-        name: item.name,
-        brand: item.brand,
-        price: item.price,
-        image: item.image?.url
-          ? `https://playful-friendship-cd80f76481.strapiapp.com/api/products?populate=*${item.image.url}`
-          : "https://via.placeholder.com/150",
-        inStock: item.inStock,
-        availableQuantity: item.availableQuantity,
-      }));
+        name: attrs.name,
+        brand: attrs.brand,
+        price: attrs.price,
+        image: imageUrl,
+        inStock: attrs.inStock,
+        availableQuantity: attrs.availableQuantity,
+      };
+    });
 
-      renderProducts();
-    } catch (err) {
-      console.error("Error cargando productos:", err);
-    }
-  };
+    renderProducts();
+  } catch (err) {
+    console.error("Error cargando productos:", err);
+  }
+};
 
   // ----------- CARRITO -----------
   const saveCart = () => localStorage.setItem("cart", JSON.stringify(cart));
