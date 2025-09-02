@@ -16,8 +16,8 @@ async function fetchProductById(id) {
 
     // ----------- MAPEAR infoImege DESDE STRAPI -----------
     const imageInfo = Array.isArray(item.imageInfo) && item.imageInfo.length
-      ? item.imageInfo.map(img => img?.url ? `https://playful-friendship-cd80f76481.strapiapp.com${img.url}` : "https://via.placeholder.com/300x300?text=No+Image")
-      : [item.image?.url ? `https://playful-friendship-cd80f76481.strapiapp.com${item.image.url}` : "https://via.placeholder.com/300x300?text=No+Image"];
+      ? item.imageInfo.map(img => img?.url ? `https://playful-friendship-cd80f76481.strapiapp.com/${img.url}` : "https://via.placeholder.com/300x300?text=No+Image")
+      : [item.image?.url ? `https://playful-friendship-cd80f76481.strapiapp.com/${item.image.url}` : "https://via.placeholder.com/300x300?text=No+Image"];
 
     const product = {
       id: item.id,

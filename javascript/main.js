@@ -110,7 +110,7 @@ function iniciarApp() {
         brand: item.brand,
         price: item.price,
         image: item.image?.url
-          ? `https://playful-friendship-cd80f76481.strapiapp.com${item.image.url}`
+          ? `https://playful-friendship-cd80f76481.strapiapp.com/${item.image.url}`
           : "https://via.placeholder.com/150",
         inStock: item.inStock,
         availableQuantity: item.availableQuantity,
