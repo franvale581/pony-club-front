@@ -1,6 +1,9 @@
 console.log("main.js cargado correctamente");
 
 function iniciarApp() {
+  // ----------- CONSTANTS -------------
+  const BASE_URL = 'https://playful-friendship-cd80f76481.strapiapp.com'
+  
   // ----------- REFERENCIAS DOM -----------
   const menuToggle = document.getElementById('menuToggle');
   const barsMenu = document.getElementById('navMenu');
@@ -23,14 +26,14 @@ function iniciarApp() {
 
   let cart = JSON.parse(localStorage.getItem("cart")) || [];
   let gorras = []; // productos desde Strapi
-
+  
   // ----------- FUNCIÓN PARA ACTUALIZAR STOCK EN STRAPI -----------
 async function sendStockUpdates(cart) {
-  const STRAPI_BASE = 'https://playful-friendship-cd80f76481.strapiapp.com';
+  const STRAPI_BASE = BASE_URL;
 
   for (const item of cart) {
     try {
-      const res = await fetch(`${STRAPI_BASE}/api/update-stock`, { // <-- coincide con la ruta
+      const res = await fetch(`${STRAPI_BASE}/api/products/update-stock`, { // <-- coincide con la ruta
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -128,7 +131,7 @@ async function sendStockUpdates(cart) {
   // ----------- FETCH PRODUCTOS DESDE STRAPI -----------
   const fetchProducts = async () => {
     try {
-      const res = await fetch("https://playful-friendship-cd80f76481.strapiapp.com/api/products?populate=*");
+      const res = await fetch(`${BASE_URL}/api/products?populate=*`);
       const { data } = await res.json();
 
       gorras = data.map(item => ({
@@ -246,8 +249,36 @@ async function sendStockUpdates(cart) {
 
     updateCartState();
   };
-
+  
   // ----------- PAYPAL -----------
+  const handlePaymentSuccess = async (cartItems) => {
+    await sendStockUpdates(cartItems);
+    // Limpiar carrito
+    const cartCopy = [...cartItems]; // para usar en resumen
+    localStorage.removeItem("cart");
+    cart = [];
+    updateCartState();
+    paypalContainer.innerHTML = "";
+
+    if (completeSection) {
+      const resumen = cartCopy.map(p => `${p.quantity}x ${p.name} - $${(p.quantity * p.price).toFixed(2)}`).join('<br>');
+      completeSection.innerHTML = `
+        <div class="complete-buy-message">
+          <h2>Thank you for your purchase!</h2>
+          <p>You are now part of the Pony Club family. You will receive an email shortly with your order confirmation and tracking number.</p>
+          <div class="order-summary">
+            ${resumen}
+          </div>
+          <button id="backToShop">Back to Shop</button>
+        </div>
+      `;
+      const backBtn = document.getElementById('backToShop');
+      if (backBtn) backBtn.addEventListener('click', () => {
+        window.location.href = "shop-now.html";
+      });
+    }
+  }
+
   const renderPayPalButton = (cartItems) => {
     if (!window.paypal || !paypalContainer) return;
     paypalContainer.innerHTML = "";
@@ -264,34 +295,7 @@ async function sendStockUpdates(cart) {
         return actions.order.capture().then(async () => {
           emailjs.sendForm('service_4hsq0la', 'template_1sgzyxq', clientForm)
             .then(async () => {
-
-              // ✅ ACTUALIZAR STOCK ANTES DE LIMPIAR EL CARRITO
-              await sendStockUpdates(cartItems);
-
-              // Limpiar carrito
-              const cartCopy = [...cartItems]; // para usar en resumen
-              localStorage.removeItem("cart");
-              cart = [];
-              updateCartState();
-              paypalContainer.innerHTML = "";
-
-              if (completeSection) {
-                const resumen = cartCopy.map(p => `${p.quantity}x ${p.name} - $${(p.quantity * p.price).toFixed(2)}`).join('<br>');
-                completeSection.innerHTML = `
-                  <div class="complete-buy-message">
-                    <h2>Thank you for your purchase!</h2>
-                    <p>You are now part of the Pony Club family. You will receive an email shortly with your order confirmation and tracking number.</p>
-                    <div class="order-summary">
-                      ${resumen}
-                    </div>
-                    <button id="backToShop">Back to Shop</button>
-                  </div>
-                `;
-                const backBtn = document.getElementById('backToShop');
-                if (backBtn) backBtn.addEventListener('click', () => {
-                  window.location.href = "shop-now.html";
-                });
-              }
+              await handlePaymentSuccess(cartItems)
             })
             .catch(err => console.error("Error al enviar email:", err));
         });
