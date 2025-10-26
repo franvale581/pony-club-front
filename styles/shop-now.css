@@ -398,7 +398,7 @@
     gap: 1rem;
 }
 
-.btn-info,
+
 .btn-add,
 .btn-buy,
 .btn-delete {
@@ -415,7 +415,6 @@
     text-transform: uppercase;
 }
 
-.btn-info,
 .btn-buy,
 .btn-add,
 .btn-delete {
@@ -427,7 +426,6 @@
     width: 100%;
 }
 
-.btn-info:hover,
 .btn-add:hover,
 .btn-buy:hover,
 .btn-delete:hover {
@@ -437,13 +435,26 @@
 }
 
 .btn-info {
-    text-align: center;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border: none;
+    background: transparent;
+    /* transparente */
+    cursor: pointer;
+    /* puntero de clic */
+    z-index: 2;
+    /* por encima de la imagen */
+    padding: 0;
 }
+
 .btn-add:disabled {
-  background: #ccc;
-  color: #666;
-  cursor: not-allowed;
-  opacity: 0.6;
+    background: #ccc;
+    color: #666;
+    cursor: not-allowed;
+    opacity: 0.6;
 }
 
 /* products section */
@@ -542,24 +553,25 @@
 
 .product-stock {
     position: absolute;
-    top: 20px;
-    left: -40px;
+    top: 10px;
+    left: 5px;
     background: green;
     /* por defecto */
     color: white;
     font-size: 0.9rem;
     font-weight: 400;
     font-family: "Kanit", sans-serif;
-    padding: 5px 50px;
-    transform: rotate(-45deg);
+    text-align: center;
+    padding: 5px 12px;
     text-align: center;
     box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
     z-index: 2;
+    border-radius: 20px;
 }
 
 /* Colores según stock */
 .in-stock {
-    background: #16a34a;
+    background: #01ad40;
 
 }
 

@@ -107,7 +107,8 @@ async function sendStockUpdates(cart) {
           <div class="product-stock ${inStock ? 'in-stock' : 'out-of-stock'}">
             ${inStock ? 'In Stock' : 'Out of Stock'}
           </div>
-          <img src="${image}" alt="product" class="product-img" />
+          <img src="${image}" alt="product" class="product-img"/>
+          <button class="btn-info" data-id="${id}"></button>
         </div>
         <div class="product-text-container">
           <h3 class="product-name">${name}</h3>
@@ -122,7 +123,7 @@ async function sendStockUpdates(cart) {
             ${!inStock ? 'disabled style="background:#ccc;cursor:not-allowed;"' : ''}>
             ${inStock ? 'Add' : 'add'}
           </button>
-          <button class="btn-info" data-id="${id}">INFO</button>
+
         </div>
       </div>
     `).join("");
